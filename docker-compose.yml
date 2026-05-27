@@ -23,9 +23,7 @@ services:
           cpus: "2.0"
 
   spice:
-    image: spiceai.org/spiceai:local
-    ## image: spiceai/spiceai:1.11.6-models
-    ## image: spiceai/spiceai:2.0.0-rc.5 - once available
+    image: spiceai/spiceai:2.0.0-rc.5
     container_name: spice
     restart: unless-stopped
     command: ["--http", "0.0.0.0:8090", "--flight", "0.0.0.0:50051"]
