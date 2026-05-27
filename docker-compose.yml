@@ -1,0 +1,86 @@
+services:
+  hermes:
+    image: nousresearch/hermes-agent:latest
+    container_name: hermes
+    restart: unless-stopped
+    command: gateway run
+    ports:
+      - "8642:8642"
+    volumes:
+      - ./hermes-data:/opt/data
+      - ./hermes-config.yaml:/opt/data/config.yaml
+      - ./.env:/opt/data/.env
+    networks:
+      - hermes-net
+    depends_on:
+      - spice
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
+
+  spice:
+    image: spiceai.org/spiceai:local
+    # image: spiceai/spiceai:1.11.6-models
+    container_name: spice
+    restart: unless-stopped
+    command: ["--http", "0.0.0.0:8090", "--flight", "0.0.0.0:50051"]
+    ports:
+      - "8090:8090"
+      - "50051:50051"
+    volumes:
+      - ./spicepod.yaml:/app/spicepod.yaml
+    environment:
+      - SPICE_API_KEY=${SPICE_API_KEY}
+    networks:
+      - hermes-net
+    depends_on:
+      - fast-mcp-server
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"
+
+
+  fast-mcp-server:
+    build: ./fast-mcp-server
+    container_name: fast-mcp-server
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    networks:
+      - hermes-net
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+
+  dashboard:
+    image: nousresearch/hermes-agent:latest
+    container_name: hermes-dashboard
+    restart: unless-stopped
+    command: dashboard --host 0.0.0.0 --insecure
+    ports:
+      - "9119:9119"
+    volumes:
+      - ./hermes-data:/opt/data
+    environment:
+      - GATEWAY_HEALTH_URL=http://hermes:8642
+    networks:
+      - hermes-net
+    depends_on:
+      - hermes
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+
+networks:
+  hermes-net:
+    driver: bridge

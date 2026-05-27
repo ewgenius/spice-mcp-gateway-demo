@@ -1,0 +1,18 @@
+# Hermes Agent Configuration
+
+model:
+  default: "openai/gpt-4.1-mini"
+  provider: "openrouter"
+
+agent:
+  max_turns: 60
+
+# Connect to Spice as an MCP server
+mcp_servers:
+  spice:
+    url: http://spice:8090/v1/mcp
+    transport: streamable-http
+    timeout: 120
+    connect_timeout: 60
+    headers:
+      x-api-key: spice-mcp-demo-key-2026

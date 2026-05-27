@@ -1,0 +1,31 @@
+version: v1
+kind: Spicepod
+name: 2026-05-26-spice-mcp-netbox
+
+secrets:
+  - from: env
+    name: env
+
+runtime:
+  auth:
+    api-key:
+      enabled: true
+      keys:
+        - ${ env:SPICE_API_KEY }
+  mcp:
+    allowed_hosts:
+      - localhost
+      - hermes
+      - spice
+      - spice:8090
+
+tools:
+  - name: fast_mcp
+    from: mcp:http://fast-mcp-server:8000/mcp
+
+datasets:
+- from: s3://spiceai-demo-datasets/taxi_trips/2024/
+  name: taxi_trips
+  description: taxi trips in s3
+  params:
+    file_format: parquet

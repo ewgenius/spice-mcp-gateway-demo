@@ -1,0 +1,19 @@
+[project]
+name = "fast-mcp-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "ewgenius", email = "hey@ewgenius.me" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "fastmcp>=3.2.4,<4",
+]
+
+[project.scripts]
+fast-mcp-server = "fast_mcp_server.server:main"
+
+[build-system]
+requires = ["uv_build>=0.10.7,<0.11.0"]
+build-backend = "uv_build"
