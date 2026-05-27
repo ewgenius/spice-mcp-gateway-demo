@@ -9,7 +9,7 @@ services:
     volumes:
       - ./hermes-data:/opt/data
       - ./hermes-config.yaml:/opt/data/config.yaml:ro
-      - ./.env:/opt/data/.env
+      - ./.env:/opt/data/.env:ro
     networks:
       - hermes-net
     depends_on:
@@ -36,6 +36,7 @@ services:
       - ./spicepod.yaml:/app/spicepod.yaml
     environment:
       - SPICE_API_KEY=${SPICE_API_KEY}
+      - SPICE_SPICEAI_API_KEY=${SPICE_SPICEAI_API_KEY}
     networks:
       - hermes-net
     depends_on:

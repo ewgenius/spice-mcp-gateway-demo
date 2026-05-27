@@ -2,9 +2,12 @@ version: v1
 kind: Spicepod
 name: 2026-05-26-spice-mcp-netbox
 
-secrets:
-  - from: env
-    name: env
+management:
+  enabled: true
+  api_key: ${ secrets:SPICE_SPICEAI_API_KEY }
+  params:
+    data_endpoint: https://us-west-2-prod-aws-flight.spiceai.io
+    region: us-west-2
 
 runtime:
   auth:
@@ -24,8 +27,8 @@ tools:
     from: mcp:http://fast-mcp-server:8000/mcp
 
 datasets:
-- from: s3://spiceai-demo-datasets/taxi_trips/2024/
-  name: taxi_trips
-  description: taxi trips in s3
-  params:
-    file_format: parquet
+  - from: s3://spiceai-demo-datasets/taxi_trips/2024/
+    name: taxi_trips
+    description: taxi trips in s3
+    params:
+      file_format: parquet
