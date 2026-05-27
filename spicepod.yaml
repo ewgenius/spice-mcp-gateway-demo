@@ -20,7 +20,6 @@ runtime:
       - localhost
       - hermes
       - spice
-      - spice:8090
 
 tools:
   - name: fast_mcp
